@@ -9,7 +9,7 @@
         </span>
       </li>
     </ul>
-    <div v-if="$route.params.id">
+    <div v-else-if="$route.params.id">
       <p> Name: {{ printStudentData().name }}</p>
       <p> Surname: {{ printStudentData().surname }}</p>
     </div>
@@ -29,9 +29,16 @@ export default {
   },
   methods:{
     printStudentData() {
-      const student = this.Allstudents
-      .find(({ id }) => this.$route.params.id == id);
-        return student
+        let student = this.Allstudents.find(({ id }) => this.$route.params.id == id);
+        if(student){
+          return student;
+        } else {
+          //Temporary - Error Handler
+          student =  []
+          student.name = "unknown";
+          student.surname= "unknown";
+          return student; 
+        }
     },
 
     DeleteThis(index) {
@@ -40,7 +47,7 @@ export default {
 
     Edit( itemId) {
       this.$router.push({ path: '/editStudent/' + itemId})
-    }
+    },
   }
 }
 </script>
